@@ -11,7 +11,7 @@ controller.postLogin = async (req, res, next) => {
 
         let user = await User.findOne({
             where: {
-                number: `${username}`.substring(0,3),
+                username
             }
         });
 
@@ -61,7 +61,7 @@ const sendResponseOnSuccessfulLogin = (res, user) => {
         expiresIn: 60 * 60,
         user: JSON.stringify({
             id: user.id,
-            number: user.number,
+            username: user.username,
         }),
         sessionId: user.sessionId
     });
