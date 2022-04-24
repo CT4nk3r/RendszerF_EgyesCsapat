@@ -14,7 +14,7 @@ const sessionHandler = session({
         maxAge: 60 * 60 * 1000 * 24 * 7,
     }, 
     secret: 'my secret',
-    resave: true,
+    resave: false,
     saveUninitialized: false,
     store: sessionStore,
 });

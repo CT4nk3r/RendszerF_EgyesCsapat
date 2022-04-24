@@ -27,12 +27,14 @@ controller.postLogin = async (req, res, next) => {
 
         const hash = crypto.pbkdf2Sync(password, user?.salt, 10000, 64, `sha512`).toString('hex');
 
+
         if(hash === user?.password) {
             if (user.sessionId != req.sessionID) {
                 await sessionStore.sessionModel.destroy({ where: { sid: user.sessionId } });
                 await user.update({
                     sessionId: req.sessionID
                 });
+                res.cookie("token",user.sessionId)
             }
             
             delete user.password;
@@ -53,18 +55,19 @@ controller.postLogin = async (req, res, next) => {
 }
 
 const sendResponseOnSuccessfulLogin = (res, user) => {
-    res.status(200).send({
+    const response = {
         message: {
             type: 'success',
             text: 'Authentication was successful!'
         },
-        expiresIn: 60 * 60,
+        expiresIn: null,
         user: JSON.stringify({
             id: user.id,
             username: user.username,
         }),
         sessionId: user.sessionId
-    });
+    }
+    res.render('yourpage.ejs', {data : JSON.stringify(response)})
 }
 
 const sendResponseOnFailedLogin = (res) => {
