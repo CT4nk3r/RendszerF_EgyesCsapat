@@ -1,6 +1,5 @@
 # RendszerF_EgyesCsapat
----
-abstract: |
+
   A programunk egy Android applikáció lesz, amin lehet jelezni a
   különböző karbantartási igényeket. A programnak a szerver része ezeket
   fogja automatikusan is csinálni.
