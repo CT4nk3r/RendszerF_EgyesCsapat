@@ -45,6 +45,8 @@ controller.postLogin = async (req, res, next) => {
             req.session.user = user;
 
             res.cookie("token",user.sessionId)
+            if(user.isAdmin == true)
+                res.cookie("isAdmin", "true")
             return await req.session.save(async (err) => {
                 return await sendResponseOnSuccessfulLogin(res, user);
             });
@@ -72,14 +74,12 @@ const sendResponseOnSuccessfulLogin = async (res, user) => {
         let newDate = formatDate(main.maintenance.lastInstance)
         newDate = new Date(newDate)
         newDate = newDate.addDays(main.maintenance.period)
-        console.log(newDate)
         mc.push({
             desc: main.maintenance.desc,
             locationId: main.maintenance.locationId,
             time: formatDate(newDate)  
         })
     }
-    console.log(mc)
     res.render('yourpage.ejs', {data : mc})
 }
 

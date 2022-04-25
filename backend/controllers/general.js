@@ -29,14 +29,12 @@ controller.getIndex = async function (req, res, next) {
                 let newDate = formatDate(main.maintenance.lastInstance)
                 newDate = new Date(newDate)
                 newDate = newDate.addDays(main.maintenance.period)
-                console.log(newDate)
                 mc.push({
                     desc: main.maintenance.desc,
                     locationId: main.maintenance.locationId,
                     time: formatDate(newDate)  
                 })
             }
-            console.log(mc)
             res.render('yourpage.ejs', {data : mc})
         }
         else{

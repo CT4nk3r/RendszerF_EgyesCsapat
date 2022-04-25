@@ -1,7 +1,49 @@
 <h1>Login successful</h1>
 <h3>Here are your works that have to be done: </h3>
-<div>
-    <% data.forEach((mc) => {%>
-        <p>Task: <%=mc.desc%>  Location: <%=mc.locationId%> Be done by: <%=mc.time%></p>
-    <%})%>
-</div>
+
+<script>
+    function logout(){
+        console.log(document.cookie = "token=-1")
+        location.href = "http://localhost:5000/"
+    }
+    function isAdminCheck(){
+        console.log("admin check...")
+        console.log(getCookie("isAdmin"))
+        if(getCookie("isAdmin") == "true"){
+            document.getElementById('addObjectForm').style.display= 'block' ;
+        }
+    }
+    function getCookie(name)
+    {
+        var re = new RegExp(name + "=([^;]+)");
+        var value = re.exec(document.cookie);
+        return (value != null) ? unescape(value[1]) : null;
+    }
+</script>
+<body onload="isAdminCheck()">
+
+    <div>
+        <% data.forEach((mc) => {%>
+            <p><b>Task:</b> <%=mc.desc%>  <b>Location:</b> <%=mc.locationId%> <b>Be done by:</b> <%=mc.time%></p>
+        <%})%>
+    </div>
+
+    <div id="addObjectForm" style="display: none;">
+        <form action="/admin/object/add" method="post">
+            <div>
+                <label for="name">name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div>
+                <label for="locationId">locationId</label>
+                <input type="text" id="locationId" name="locationId" required>  
+            </div>
+            <button type="submit">Add Object</button>
+        </form>
+    </div>
+    <div>
+        <button onclick="logout()"> Log out </button>
+    </div>
+
+
+</body>

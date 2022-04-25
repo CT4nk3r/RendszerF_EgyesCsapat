@@ -39,6 +39,10 @@ export default async () => {
         Object.hasOne(Equipment, { constraints: true, onDelete: 'CASCADE', foreignKey: 'objectId' });
         Equipment.belongsTo(Object, { constraints: false });
 
+        // ----- Object -----
+        Location.hasOne(Object, { constraints: true, onDelete: 'CASCADE', foreignKey: 'locationId' });
+        Object.belongsTo(Location, { constraints: false });
+
         await sequelize.sync({ alter: true }); // Alter on model change
     } catch(error) {
         console.error(error);
