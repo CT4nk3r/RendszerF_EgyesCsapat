@@ -30,8 +30,6 @@ export default async () => {
         Maintenance.belongsTo(Location, { constraints: false });
         Object.hasOne(Maintenance, { constraints: true, onDelete: 'CASCADE', foreignKey: 'objectId' });
         Maintenance.belongsTo(Object, { constraints: false });
-        Repairer.hasOne(Maintenance, { constraints: true, onDelete: 'CASCADE', foreignKey: 'repairerId' });
-        Maintenance.belongsTo(Repairer, { constraints: false });
 
         // ----- Equipment -----
         Location.hasOne(Equipment, { constraints: true, onDelete: 'CASCADE', foreignKey: 'locationId' });

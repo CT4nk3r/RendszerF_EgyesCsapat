@@ -2,11 +2,10 @@ const controller = {};
 
 controller.getIndex = async function (req, res, next) {
     try {
-        if(req.cookies.token == req.sessionID) {
-            req.sessionID
-            const worksToBeDone = {
-            }
-            res.render('yourpage.ejs', {data : JSON.stringify(worksToBeDone)})
+        if(req.cookies.loggedin == "true") {
+            console.log(req.cookies.loggedin)
+            console.log(req.cookies.connect.sid)
+            res.render('yourpage.ejs', {data: "already logged in"})
         }
         else{
             res.render('login.ejs')
