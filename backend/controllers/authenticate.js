@@ -2,6 +2,8 @@ import crypto from 'crypto';
 import User from '../database/models/user.js';
 import { sessionStore } from '../database/session.js';
 import Repairer from '../database/models/repairer.js';
+import Maintenance from '../database/models/maintenance.js';
+import formatDate from '../utilities/format-date.js';
 
 const controller = {};
 
@@ -34,7 +36,6 @@ controller.postLogin = async (req, res, next) => {
                 await user.update({
                     sessionId: req.sessionID
                 });
-                res.cookie("token",user.sessionId)
             }
             
             delete user.password;
@@ -43,8 +44,9 @@ controller.postLogin = async (req, res, next) => {
             req.session.isLoggedIn = true;
             req.session.user = user;
 
-            return await req.session.save((err) => {
-                return sendResponseOnSuccessfulLogin(res, user);
+            res.cookie("token",user.sessionId)
+            return await req.session.save(async (err) => {
+                return await sendResponseOnSuccessfulLogin(res, user);
             });
         } else
             return sendResponseOnFailedLogin(res);
@@ -54,20 +56,31 @@ controller.postLogin = async (req, res, next) => {
     }
 }
 
-const sendResponseOnSuccessfulLogin = (res, user) => {
-    const response = {
-        message: {
-            type: 'success',
-            text: 'Authentication was successful!'
+const sendResponseOnSuccessfulLogin = async (res, user) => {
+    const maintenances = await Repairer.findAll({
+        where: {
+            id: user.id    
         },
-        expiresIn: null,
-        user: JSON.stringify({
-            id: user.id,
-            username: user.username,
-        }),
-        sessionId: user.sessionId
+        include: {model: Maintenance,raw:true}
+    })
+
+    let mc = [];
+
+    let date = 0; 
+
+    for(let main of maintenances){
+        let newDate = formatDate(main.maintenance.lastInstance)
+        newDate = new Date(newDate)
+        newDate = newDate.addDays(main.maintenance.period)
+        console.log(newDate)
+        mc.push({
+            desc: main.maintenance.desc,
+            locationId: main.maintenance.locationId,
+            time: formatDate(newDate)  
+        })
     }
-    res.render('yourpage.ejs', {data : JSON.stringify(response)})
+    console.log(mc)
+    res.render('yourpage.ejs', {data : mc})
 }
 
 const sendResponseOnFailedLogin = (res) => {

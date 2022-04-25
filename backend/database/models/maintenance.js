@@ -5,13 +5,14 @@ const Maintenance = sequelize.define('maintenance',
     {
         desc: DataTypes.STRING,
         lastInstance: DataTypes.DATE,
-        period: DataTypes.INTEGER
+        period: DataTypes.INTEGER,
+        reoccuring: DataTypes.BOOLEAN,
     },
     {
         indexes: [
             {
                 allowNull: false,
-                fields: ['desc', 'lastInstance', 'period']
+                fields: ['desc', 'lastInstance', 'period', 'reoccuring']
             }
         ],
         tableName: 'maintenances'

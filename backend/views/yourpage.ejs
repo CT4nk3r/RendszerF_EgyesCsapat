@@ -1,4 +1,7 @@
-Login successful
+<h1>Login successful</h1>
+<h3>Here are your works that have to be done: </h3>
 <div>
-    <%=data%>
+    <% data.forEach((mc) => {%>
+        <p>Task: <%=mc.desc%>  Location: <%=mc.locationId%> Be done by: <%=mc.time%></p>
+    <%})%>
 </div>

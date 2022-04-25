@@ -3,6 +3,7 @@ import fs from 'fs';
 import User from '../database/models/user.js';
 import generateRandomString from '../utilities/generate-random-string.js';
 import Repairer from '../database/models/repairer.js';
+import Maintenance from '../database/models/maintenance.js';
 
 const controller = {};
 
@@ -80,6 +81,32 @@ controller.postAddRepairer = async (req, res, next) => {
             message: {
                 type: 'success',
                 text: 'Generation was successful!'
+            }
+        })
+    } catch (error) {
+        console.error(error);
+        res.send(JSON.stringify({ error: error.message }));
+    }
+}
+
+controller.postAddMaintenance = async (req, res, next) => {
+    try {
+        let { desc, lastInstance, period, reoccuring, repairerId, locationId, objectId } = req.body;
+
+        console.log(req.body)
+        await Maintenance.create({
+            desc,
+            lastInstance,
+            period,
+            reoccuring,
+            repairerId,
+            locationId,
+            objectId
+        });
+        res.send({
+            message: {
+                type: 'success',
+                text: 'Maintenance was added!'
             }
         })
     } catch (error) {
