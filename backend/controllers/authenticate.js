@@ -45,8 +45,11 @@ controller.postLogin = async (req, res, next) => {
             req.session.user = user;
 
             res.cookie("token",user.sessionId)
-            if(user.isAdmin == true)
+            if(user.isAdmin == true){
                 res.cookie("isAdmin", "true")
+            }else{
+                res.cookie("isAdmin", "false")
+            }
             return await req.session.save(async (err) => {
                 return await sendResponseOnSuccessfulLogin(res, user);
             });
