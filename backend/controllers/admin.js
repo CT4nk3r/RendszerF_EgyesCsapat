@@ -66,7 +66,7 @@ controller.postGenerateUsers = async (req, res, next) => {
 
 controller.postAddRepairer = async (req, res, next) => {
     try {
-        let { username, password, isAdmin } = req.body;
+        let { username, password, isAdmin, proficiency } = req.body;
 
         const salt =  generateRandomString(20);
 
@@ -74,13 +74,14 @@ controller.postAddRepairer = async (req, res, next) => {
             username,
             password: crypto.pbkdf2Sync(password, salt, 10000, 64, `sha512`).toString('hex'),
             isAdmin,
-            salt
+            salt,
+            proficiency
         });
 
         res.send({
             message: {
                 type: 'success',
-                text: 'Generation was successful!'
+                text: 'Repairer was created successfully!'
             }
         })
     } catch (error) {

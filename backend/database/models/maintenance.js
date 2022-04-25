@@ -12,7 +12,7 @@ const Maintenance = sequelize.define('maintenance',
         indexes: [
             {
                 allowNull: false,
-                fields: ['desc', 'lastInstance', 'period', 'reoccuring']
+                fields: ['desc', 'period', 'reoccuring']
             }
         ],
         tableName: 'maintenances'

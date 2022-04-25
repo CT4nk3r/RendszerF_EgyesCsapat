@@ -11,6 +11,9 @@
         console.log(getCookie("isAdmin"))
         if(getCookie("isAdmin") == "true"){
             document.getElementById('addObjectForm').style.display= 'block' ;
+            document.getElementById('postAddMaintenance').style.display= 'block' ;
+            document.getElementById('generateUsers').style.display= 'block' ;
+            document.getElementById('addRepairer').style.display= 'block' ;
         }
     }
     function getCookie(name)
@@ -32,6 +35,60 @@
         <form action="/admin/object/add" method="post">
             <div>
                 <label for="name">name</label>
+                <input type="text" id="name" name="name" value="Tűzoltó készülék" required>
+            </div>
+            <div>
+                <label for="locationId">locationId</label>
+                <input type="text" id="locationId" name="locationId" value="321" required>  
+            </div>
+            <div>
+                <label for="category">category</label>
+                <input type="text" id="category" name="category" value="Tűzoltás" required>  
+            </div>
+            <button type="submit">Add Object</button>
+        </form>
+    </div>
+    <div id="postAddMaintenance" style="display: none;">
+        <form action="/admin/add_maintenance" method="post">
+            <div>
+                <label for="desc">description</label>
+                <input type="text" id="desc" name="desc" value="Tűzoltó készülék csere" required>
+            </div>
+            <div>
+                <label for="lastInstance">lastInstance</label>
+                <input type="text" id="lastInstance" name="lastInstance" value="2022-05-25" required>  
+            </div>
+            <div>
+                <label for="period">period</label>
+                <input type="text" id="period" name="period" value="180" required>  
+            </div>
+            <div>
+                <label for="reoccuring">reoccuring</label>
+                <input type="datetime" id="reoccuring" name="reoccuring" value="true" required>  
+            </div>
+            <div>
+                <label for="repairerId">repairerId</label>
+                <input type="text" id="repairerId" name="repairerId" value="3" required>  
+            </div>
+            <div>
+                <label for="locationId">locationId</label>
+                <input type="text" id="locationId" name="locationId" value="321" required>  
+            </div>
+            <div>
+                <label for="objectId">objectId</label>
+                <input type="text" id="objectId" name="objectId" value="10" required>
+            </div>
+            <div>
+                <label for="category">category</label>
+                <input type="text" id="category" name="category" value="Tűzoltás" required>
+            </div>
+            <button type="submit">Add Maintenance</button>
+        </form>
+    </div>
+    <div id="addObjectForm" style="display: none;">
+        <form action="/admin/object/add" method="post">
+            <div>
+                <label for="name">name</label>
                 <input type="text" id="name" name="name" required>
             </div>
             <div>
@@ -41,9 +98,34 @@
             <button type="submit">Add Object</button>
         </form>
     </div>
+    <div id="addRepairer" style="display: none;">
+        <form action="/admin/add_repairer" method="post">
+            <div>
+                <label for="username">username</label>
+                <input type="text" id="username" name="username" value="ABC123" required>
+            </div>
+            <div>
+                <label for="password">password</label>
+                <input type="password" id="password" name="password" value="321" required>  
+            </div>
+            <div>
+                <label for="isAdmin">Admin:</label>
+                <input type="text" id="isAdmin" name="isAdmin" value="true" required>  
+            </div>
+            <div>
+                <label for="proficiency">proficiency</label>
+                <input type="text" id="proficiency" name="proficiency" value="Tűzoltás" required>  
+            </div>
+            <button type="submit">Add Repairer</button>
+        </form>
+    </div>
+    <div id="generateUsers" style="display: none;">
+        <form action="/admin/generate_users" method="POST">
+            <button type="submit">Generate New Users</button>
+        </form>
+    </div>
+
     <div>
         <button onclick="logout()"> Log out </button>
     </div>
-
-
 </body>

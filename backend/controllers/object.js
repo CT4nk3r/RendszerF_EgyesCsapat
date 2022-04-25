@@ -4,12 +4,13 @@ const controller = {};
 
 controller.postAddObject = async (req, res, next) => {
     try {
-        let { name, locationId } = req.body;
+        let { name, locationId, category } = req.body;
         locationId = locationId ?? null;
 
         await Object.create({
             name,
-            locationId
+            locationId,
+            category
         })
 
         res.send({ message: { type: 'success', text: 'Object generated successfully.' }});

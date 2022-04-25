@@ -74,14 +74,21 @@ const sendResponseOnSuccessfulLogin = async (res, user) => {
     let date = 0; 
 
     for(let main of maintenances){
-        let newDate = formatDate(main.maintenance.lastInstance)
-        newDate = new Date(newDate)
-        newDate = newDate.addDays(main.maintenance.period)
-        mc.push({
-            desc: main.maintenance.desc,
-            locationId: main.maintenance.locationId,
-            time: formatDate(newDate)  
-        })
+        if(main.maintenance?.lastInstance){
+            let newDate = formatDate(main.maintenance.lastInstance)
+            newDate = new Date(newDate)
+            newDate = newDate.addDays(main.maintenance.period)
+            mc.push({
+                desc: main.maintenance.desc,
+                locationId: main.maintenance.locationId,
+                time: formatDate(newDate)
+            })
+        }
+        else{
+            res.send({ message: { text: "Nincs feladatod!", type: 'No Work' }});
+        }
+
+        
     }
     res.render('yourpage.ejs', {data : mc})
 }
