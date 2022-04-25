@@ -36,7 +36,9 @@ controller.postLogin = async (req, res, next) => {
                 });
                 res.cookie("token",user.sessionId)
             }
-            
+            if(req.sessionID == user.sessionId){
+                res.cookie("loggedin","true")
+            }
             delete user.password;
             delete user.salt;
 
@@ -55,19 +57,19 @@ controller.postLogin = async (req, res, next) => {
 }
 
 const sendResponseOnSuccessfulLogin = (res, user) => {
-    const response = {
+    const worksToBeDone = {
         message: {
             type: 'success',
             text: 'Authentication was successful!'
         },
-        expiresIn: null,
+        expiresIn: "One Week",
         user: JSON.stringify({
             id: user.id,
             username: user.username,
         }),
         sessionId: user.sessionId
     }
-    res.render('yourpage.ejs', {data : JSON.stringify(response)})
+    res.render('yourpage.ejs', {data : JSON.stringify(worksToBeDone)})
 }
 
 const sendResponseOnFailedLogin = (res) => {
