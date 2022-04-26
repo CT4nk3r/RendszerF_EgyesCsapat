@@ -29,6 +29,12 @@ controller.getIndex = async function (req, res, next) {
                 let newDate = formatDate(main.maintenance.lastInstance)
                 newDate = new Date(newDate)
                 newDate = newDate.addDays(main.maintenance.period)
+                let currentDate = new Date()
+                if(main.maintenance.reoccuring == true){
+                    while (newDate < currentDate){
+                        newDate = newDate.addDays(main.maintenance.period)                
+                    }
+                }
                 mc.push({
                     desc: main.maintenance.desc,
                     locationId: main.maintenance.locationId,
