@@ -121,6 +121,18 @@ feladatkiírásokat automatikusan
 
 ## Feladatok listázása, állapotok megjelenítése
 
+A feladatokat sikeresen ki tudja listázni a program.
+
+# Harmadik mérföldkő: 2022. május 9.
+
+## Feladatok kiosztása karbantartók számára
+
 Ezt két részre osztottuk. Az admin lát minden feladatot. 
 Viszont a karbantaró csak azt/azokat amik hozzá tartoznak.
+
+## Az adott karbantartóhoz rendelt feladatok listázása
+
+Ezt ahogy feljebb említettem. Ha egy karbantartó belép akkor automatikusan csak a saját feladatait listázza ki.
+
+## Állapotok beállításának lehetősége
 
