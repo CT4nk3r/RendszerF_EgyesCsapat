@@ -91,3 +91,20 @@ Példa:
 
 Példát követve: elektromosságban való jártasság fontos, hogy meg
 lehessen szerelni a villanydobozt
+
+# Második mérföldkő: 2022. április. 25.
+
+## Eszköz kategóriához normaidők és karbantartási periódus rögzítése
+
+A program képes az adott eszközök karbantartását rendszeresen megismételni.
+
+## Eszköz kategóriához a karbantartásra vonatkozó instrukciók rögzítése
+A progtamba sikerült kategóriánként hozzárendelni instrukciókat a karbantartási feladatokra
+
+## Karbantartók felvétele a rendszerbe
+
+Jelenleg már képesek vagyunk karbantartókat felvenni rendszerbe
+
+## Végzettségek karbantartóhoz rendelése
+
+A karbantartókhoz hozzá tudjuk rendelni a feladatokat.
