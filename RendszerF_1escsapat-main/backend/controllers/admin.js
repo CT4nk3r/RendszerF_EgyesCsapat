@@ -3,6 +3,7 @@ import fs from 'fs';
 import User from '../database/models/user.js';
 import generateRandomString from '../utilities/generate-random-string.js';
 import Repairer from '../database/models/repairer.js';
+import Maintenance from '../database/models/maintenance.js';
 
 const controller = {};
 
@@ -65,7 +66,7 @@ controller.postGenerateUsers = async (req, res, next) => {
 
 controller.postAddRepairer = async (req, res, next) => {
     try {
-        let { username, password, isAdmin } = req.body;
+        let { username, password, isAdmin, proficiency } = req.body;
 
         const salt =  generateRandomString(20);
 
@@ -73,13 +74,40 @@ controller.postAddRepairer = async (req, res, next) => {
             username,
             password: crypto.pbkdf2Sync(password, salt, 10000, 64, `sha512`).toString('hex'),
             isAdmin,
-            salt
+            salt,
+            proficiency
         });
 
         res.send({
             message: {
                 type: 'success',
-                text: 'Generation was successful!'
+                text: 'Repairer was created successfully!'
+            }
+        })
+    } catch (error) {
+        console.error(error);
+        res.send(JSON.stringify({ error: error.message }));
+    }
+}
+
+controller.postAddMaintenance = async (req, res, next) => {
+    try {
+        let { desc, lastInstance, period, reoccuring, repairerId, locationId, objectId } = req.body;
+
+        console.log(req.body)
+        await Maintenance.create({
+            desc,
+            lastInstance,
+            period,
+            reoccuring,
+            repairerId,
+            locationId,
+            objectId
+        });
+        res.send({
+            message: {
+                type: 'success',
+                text: 'Maintenance was added!'
             }
         })
     } catch (error) {
