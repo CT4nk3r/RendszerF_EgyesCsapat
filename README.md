@@ -108,3 +108,19 @@ Jelenleg már képesek vagyunk karbantartókat felvenni rendszerbe
 ## Végzettségek karbantartóhoz rendelése
 
 A karbantartókhoz hozzá tudjuk rendelni a feladatokat.
+
+## Rendkívüli karbantartási feladatok rögzítése a rendszerbe
+
+A porgramba már sikeresen létre lehet hozni olyan karbantartási 
+feladatokat is amik nem ismétlődnek időről-időre.
+
+## Időszakos karbantartási feladatok automatikus generálása
+
+Az előre megadott időtartamonként tudunk generálni 
+feladatkiírásokat automatikusan
+
+## Feladatok listázása, állapotok megjelenítése
+
+Ezt két részre osztottuk. Az admin lát minden feladatot. 
+Viszont a karbantaró csak azt/azokat amik hozzá tartoznak.
+
