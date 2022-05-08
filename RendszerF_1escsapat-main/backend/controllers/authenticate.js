@@ -2,6 +2,8 @@ import crypto from 'crypto';
 import User from '../database/models/user.js';
 import { sessionStore } from '../database/session.js';
 import Repairer from '../database/models/repairer.js';
+import Maintenance from '../database/models/maintenance.js';
+import formatDate from '../utilities/format-date.js';
 
 const controller = {};
 
@@ -27,6 +29,7 @@ controller.postLogin = async (req, res, next) => {
 
         const hash = crypto.pbkdf2Sync(password, user?.salt, 10000, 64, `sha512`).toString('hex');
 
+
         if(hash === user?.password) {
             if (user.sessionId != req.sessionID) {
                 await sessionStore.sessionModel.destroy({ where: { sid: user.sessionId } });
@@ -41,8 +44,14 @@ controller.postLogin = async (req, res, next) => {
             req.session.isLoggedIn = true;
             req.session.user = user;
 
-            return await req.session.save((err) => {
-                return sendResponseOnSuccessfulLogin(res, user);
+            res.cookie("token",user.sessionId)
+            if(user.isAdmin == true){
+                res.cookie("isAdmin", "true")
+            }else{
+                res.cookie("isAdmin", "false")
+            }
+            return await req.session.save(async (err) => {
+                return await sendResponseOnSuccessfulLogin(res, user);
             });
         } else
             return sendResponseOnFailedLogin(res);
@@ -52,19 +61,42 @@ controller.postLogin = async (req, res, next) => {
     }
 }
 
-const sendResponseOnSuccessfulLogin = (res, user) => {
-    res.status(200).send({
-        message: {
-            type: 'success',
-            text: 'Authentication was successful!'
+const sendResponseOnSuccessfulLogin = async (res, user) => {
+    const maintenances = await Repairer.findAll({
+        where: {
+            id: user.id    
         },
-        expiresIn: 60 * 60,
-        user: JSON.stringify({
-            id: user.id,
-            username: user.username,
-        }),
-        sessionId: user.sessionId
-    });
+        include: {model: Maintenance,raw:true}
+    })
+
+    let mc = [];
+
+    let date = 0; 
+
+    for(let main of maintenances){
+        if(main.maintenance?.lastInstance){
+            let newDate = formatDate(main.maintenance.lastInstance)
+            newDate = new Date(newDate)
+            newDate = newDate.addDays(main.maintenance.period)
+            let currentDate = new Date()
+            if(main.maintenance.reoccuring == true){
+                while (newDate < currentDate){
+                    newDate = newDate.addDays(main.maintenance.period)                
+                }
+            }
+            mc.push({
+                desc: main.maintenance.desc,
+                locationId: main.maintenance.locationId,
+                time: formatDate(newDate)
+            })
+        }
+        else{
+            res.send({ message: { text: "Nincs feladatod!", type: 'No Work' }});
+        }
+
+        
+    }
+    res.render('yourpage.ejs', {data : mc})
 }
 
 const sendResponseOnFailedLogin = (res) => {
