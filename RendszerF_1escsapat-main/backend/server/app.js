@@ -10,6 +10,8 @@ import router from './router.js';
 export default () => {
     const app = express();
 
+    app.set('view-engine', 'ejs')
+
     databaseConnect();
     databaseSync();
     
