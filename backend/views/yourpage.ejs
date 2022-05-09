@@ -9,6 +9,7 @@
     }
 
     function acceptJob(taskID){
+        console.log("Accepting job " + taskID + " for user " + userID)
         url = "http://localhost:5000/admin/accept_maintenance/"
         fetch(url,{
             method: "POST",
@@ -16,18 +17,40 @@
                 "Content-Type": "application/json"
             },
             body:JSON.stringify({
-                userID:userID,
-                taskID,taskID
+                userID: userID,
+                taskID: taskID
             })
         }).then(()=>{location.href = "http://localhost:5000/"})
     }
 
     function declineJob(taskID){
-        console.log(taskID)
+        console.log("Declining job " + taskID + " for user " + userID)
+        url = "http://localhost:5000/admin/decline_maintenance/"
+        fetch(url,{
+            method: "POST",
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body:JSON.stringify({
+                userID: userID,
+                taskID: taskID
+            })
+        }).then(()=>{location.href = "http://localhost:5000/"})
     }
     
     function doneJob(taskID){
-        console.log(taskID)
+        console.log("Job " + taskID + " is done for user " + userID)
+        url = "http://localhost:5000/admin/done_maintenance/"
+        fetch(url,{
+            method: "POST",
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body:JSON.stringify({
+                userID: userID,
+                taskID: taskID
+            })
+        }).then(()=>{location.href = "http://localhost:5000/"})
     }
 
     function isAdminCheck(){
@@ -52,7 +75,7 @@
 </script>
 <body onload="isAdminCheck()">
 
-    <h3>Open Works, that you can accept</h3>
+    <h3>Open Works, that you can accept:</h3>
     <div>
         <% data2.forEach((open_maintenance) => {%>
             <p> <b>TaskNO: </b> <%=open_maintenance.maintenance_id%> <b>Task:</b> <%=open_maintenance.desc%>  <b>Location:</b> <%=open_maintenance.locationId%> <b>Be done by:</b> <%=open_maintenance.time%>

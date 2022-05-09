@@ -139,7 +139,19 @@ controller.postAddMaintenance = async (req, res, next) => {
 
 controller.postAcceptMaintenance = async (req, res, next) =>{
     try{
-        
+        let { userID, taskID } = req.body;
+
+        console.log(req.body)
+
+        const maintenance = await Maintenance.findOne({
+            where: {
+                id: taskID
+            }
+        })
+
+        await maintenance.update({
+            repairerId: userID
+        })
 
 
         res.send({
@@ -156,12 +168,27 @@ controller.postAcceptMaintenance = async (req, res, next) =>{
 
 controller.postDeclineMaintenance = async (req, res, next) =>{
     try{
+        let { userID, taskID } = req.body;
+
+        console.log(req.body)
+
+        const maintenance = await Maintenance.findOne({
+            where: {
+                id: taskID
+            }
+        })
+
+        await maintenance.update({
+            repairerId: 0
+        })
+
+
         res.send({
             message: {
                 type: 'success',
                 text: 'Job declined!'
             }
-        })
+        }) 
     }catch(error){
         console.error(error);
         res.send(JSON.stringify({ error: error.message }));
