@@ -168,7 +168,7 @@ controller.postAcceptMaintenance = async (req, res, next) =>{
 
 controller.postDeclineMaintenance = async (req, res, next) =>{
     try{
-        let { userID, taskID } = req.body;
+        let { taskID } = req.body;
 
         console.log(req.body)
 
@@ -197,6 +197,18 @@ controller.postDeclineMaintenance = async (req, res, next) =>{
 
 controller.postDoneMaintenance = async (req, res, next) =>{
     try{
+        let { taskID } = req.body;
+        
+        const maintenance = await Maintenance.findOne({
+            where: {
+                id: taskID
+            }
+        })
+
+        await maintenance.destroy({
+        })
+
+
         res.send({
             message: {
                 type: 'success',
@@ -208,6 +220,5 @@ controller.postDoneMaintenance = async (req, res, next) =>{
         res.send(JSON.stringify({ error: error.message }));
     }
 }
-
 
 export default controller;
