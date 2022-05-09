@@ -4,6 +4,7 @@ import User from '../database/models/user.js';
 import generateRandomString from '../utilities/generate-random-string.js';
 import Repairer from '../database/models/repairer.js';
 import Maintenance from '../database/models/maintenance.js';
+import Category from '../database/models/category.js';
 
 const controller = {};
 
@@ -90,6 +91,26 @@ controller.postAddRepairer = async (req, res, next) => {
     }
 }
 
+controller.postAddCategory = async(req, res, next) => {
+    try{
+        let {categoryName} = req.body;
+
+        console.log(req.body)
+        await Category.create({
+            categoryName
+        });
+        res.send({
+            message: {
+                type: 'success',
+                text: 'Category was added!'
+            }
+        })
+    }catch (error){
+        console.error(error);
+        res.send(JSON.stringify({ error: error.message }));
+    }
+}
+
 controller.postAddMaintenance = async (req, res, next) => {
     try {
         let { desc, lastInstance, period, reoccuring, repairerId, locationId, objectId } = req.body;
@@ -115,5 +136,51 @@ controller.postAddMaintenance = async (req, res, next) => {
         res.send(JSON.stringify({ error: error.message }));
     }
 }
+
+controller.postAcceptMaintenance = async (req, res, next) =>{
+    try{
+        
+
+
+        res.send({
+            message: {
+                type: 'success',
+                text: 'Job accepted!'
+            }
+        }) 
+    }catch(error){
+        console.error(error);
+        res.send(JSON.stringify({ error: error.message }));
+    }
+}
+
+controller.postDeclineMaintenance = async (req, res, next) =>{
+    try{
+        res.send({
+            message: {
+                type: 'success',
+                text: 'Job declined!'
+            }
+        })
+    }catch(error){
+        console.error(error);
+        res.send(JSON.stringify({ error: error.message }));
+    }
+}
+
+controller.postDoneMaintenance = async (req, res, next) =>{
+    try{
+        res.send({
+            message: {
+                type: 'success',
+                text: 'Job done!'
+            }
+        })      
+    }catch(error){
+        console.error(error);
+        res.send(JSON.stringify({ error: error.message }));
+    }
+}
+
 
 export default controller;

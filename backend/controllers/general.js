@@ -12,6 +12,29 @@ Date.prototype.addDays = function (days) {
 
 controller.getIndex = async function (req, res, next) {
     try {
+        
+        let mc = [];
+        let open_maintenance = [];
+        
+        const no_repairer = await Repairer.findAll({
+            where: {
+                id: 0
+            },
+            include: {model: Maintenance,raw:true}
+        })
+
+        for(let main of no_repairer){
+            let newDate = formatDate(main.maintenance.lastInstance)
+            newDate = new Date(newDate)
+            newDate = newDate.addDays(main.maintenance.period)
+            open_maintenance.push({
+                maintenance_id: main.maintenance.id,
+                desc: main.maintenance.desc,
+                locationId: main.maintenance.locationId,
+                time: formatDate(newDate)
+            })
+        }
+
         if(req.cookies.token == req.sessionID) {
             const maintenances = await Repairer.findAll({
                 where: {
@@ -19,11 +42,6 @@ controller.getIndex = async function (req, res, next) {
                 },
                 include: {model: Maintenance,raw:true}
             })
-
-
-            let mc = [];
-
-            let date = 0; 
 
             for(let main of maintenances){
                 let newDate = formatDate(main.maintenance.lastInstance)
@@ -36,12 +54,13 @@ controller.getIndex = async function (req, res, next) {
                     }
                 }
                 mc.push({
+                    maintenance_id: main.maintenance.id,
                     desc: main.maintenance.desc,
                     locationId: main.maintenance.locationId,
                     time: formatDate(newDate)  
                 })
             }
-            res.render('yourpage.ejs', {data : mc})
+            res.render('yourpage.ejs', {data2: open_maintenance, data : mc})
         }
         else{
             res.render('login.ejs')

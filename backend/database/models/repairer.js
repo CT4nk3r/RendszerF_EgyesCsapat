@@ -8,7 +8,7 @@ const Repairer = sequelize.define('repairer',
         isAdmin: DataTypes.BOOLEAN,
         sessionId: DataTypes.STRING,
         salt: DataTypes.STRING(21),
-        proficiency: DataTypes.STRING(50)
+        proficiency: DataTypes.INTEGER
     },
     {
         indexes: [

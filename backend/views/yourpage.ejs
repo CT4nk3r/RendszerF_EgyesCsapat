@@ -1,11 +1,35 @@
 <h1>Login successful</h1>
-<h3>Here are your works that have to be done: </h3>
 
 <script>
+    let userID;
+
     function logout(){
         console.log(document.cookie = "token=-1")
         location.href = "http://localhost:5000/"
     }
+
+    function acceptJob(taskID){
+        url = "http://localhost:5000/admin/accept_maintenance/"
+        fetch(url,{
+            method: "POST",
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body:JSON.stringify({
+                userID:userID,
+                taskID,taskID
+            })
+        }).then(()=>{location.href = "http://localhost:5000/"})
+    }
+
+    function declineJob(taskID){
+        console.log(taskID)
+    }
+    
+    function doneJob(taskID){
+        console.log(taskID)
+    }
+
     function isAdminCheck(){
         console.log("admin check...")
         console.log(getCookie("isAdmin"))
@@ -14,7 +38,10 @@
             document.getElementById('postAddMaintenance').style.display= 'block' ;
             document.getElementById('generateUsers').style.display= 'block' ;
             document.getElementById('addRepairer').style.display= 'block' ;
+            document.getElementById('addCategory').style.display= 'block' ;
         }
+        userID = getCookie("userID")
+        console.log(userID)
     }
     function getCookie(name)
     {
@@ -25,9 +52,21 @@
 </script>
 <body onload="isAdminCheck()">
 
+    <h3>Open Works, that you can accept</h3>
+    <div>
+        <% data2.forEach((open_maintenance) => {%>
+            <p> <b>TaskNO: </b> <%=open_maintenance.maintenance_id%> <b>Task:</b> <%=open_maintenance.desc%>  <b>Location:</b> <%=open_maintenance.locationId%> <b>Be done by:</b> <%=open_maintenance.time%>
+            <button id=<%=open_maintenance.maintenance_id%> onclick="acceptJob(<%=open_maintenance.maintenance_id%>)">Munka elfogadása</button>
+            </p>
+        <%})%>
+    </div>
+    <h3>Here are your works that have to be done: </h3>
     <div>
         <% data.forEach((mc) => {%>
-            <p><b>Task:</b> <%=mc.desc%>  <b>Location:</b> <%=mc.locationId%> <b>Be done by:</b> <%=mc.time%></p>
+            <p> <b>TaskNO: </b> <%=mc.maintenance_id%> <b>Task:</b> <%=mc.desc%>  <b>Location:</b> <%=mc.locationId%> <b>Be done by:</b> <%=mc.time%>
+            <button id=<%=mc.maintenance_id%> onclick="doneJob(<%=mc.maintenance_id%>)">Munka elvégezve</button>
+            <button id=<%=mc.maintenance_id%> onclick="declineJob(<%=mc.maintenance_id%>)">Munka elutasítása</button>
+            </p>
         <%})%>
     </div>
 
@@ -80,7 +119,7 @@
             </div>
             <div>
                 <label for="category">category</label>
-                <input type="text" id="category" name="category" value="Tűzoltás" required>
+                <input type="text" id="category" name="category" value="1" required>
             </div>
             <button type="submit">Add Maintenance</button>
         </form>
@@ -119,6 +158,17 @@
             <button type="submit">Add Repairer</button>
         </form>
     </div>
+
+    <div id="addCategory" style="display: none;">
+        <form action="/admin/add_category" method="post">
+            <div>
+                <label for="categoryName">categoryName</label>
+                <input type="text" id="categoryName" name="categoryName" value="Tűzoltás" required>  
+            </div>
+            <button type="submit">Add Category</button>
+        </form>
+    </div>
+
     <div id="generateUsers" style="display: none;">
         <form action="/admin/generate_users" method="POST">
             <button type="submit">Generate New Users</button>

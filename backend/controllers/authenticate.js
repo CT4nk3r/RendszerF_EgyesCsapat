@@ -45,6 +45,7 @@ controller.postLogin = async (req, res, next) => {
             req.session.user = user;
 
             res.cookie("token",user.sessionId)
+            res.cookie("userID",user.id)
             if(user.isAdmin == true){
                 res.cookie("isAdmin", "true")
             }else{
@@ -62,16 +63,33 @@ controller.postLogin = async (req, res, next) => {
 }
 
 const sendResponseOnSuccessfulLogin = async (res, user) => {
+    let mc = [];
+    let open_maintenance = [];
+
     const maintenances = await Repairer.findAll({
         where: {
             id: user.id    
         },
         include: {model: Maintenance,raw:true}
     })
+    const no_repairer = await Repairer.findAll({
+        where: {
+            id: 0
+        },
+        include: {model: Maintenance,raw:true}
+    })
 
-    let mc = [];
-
-    let date = 0; 
+    for(let main of no_repairer){
+        let newDate = formatDate(main.maintenance.lastInstance)
+        newDate = new Date(newDate)
+        newDate = newDate.addDays(main.maintenance.period)
+        open_maintenance.push({
+            maintenance_id: main.maintenance.id,
+            desc: main.maintenance.desc,
+            locationId: main.maintenance.locationId,
+            time: formatDate(newDate)
+        })
+    }
 
     for(let main of maintenances){
         if(main.maintenance?.lastInstance){
@@ -85,6 +103,7 @@ const sendResponseOnSuccessfulLogin = async (res, user) => {
                 }
             }
             mc.push({
+                maintenance_id: main.maintenance.id,
                 desc: main.maintenance.desc,
                 locationId: main.maintenance.locationId,
                 time: formatDate(newDate)
@@ -93,10 +112,8 @@ const sendResponseOnSuccessfulLogin = async (res, user) => {
         else{
             res.send({ message: { text: "Nincs feladatod!", type: 'No Work' }});
         }
-
-        
     }
-    res.render('yourpage.ejs', {data : mc})
+    res.render('yourpage.ejs', { data2: open_maintenance, data : mc })
 }
 
 const sendResponseOnFailedLogin = (res) => {
