@@ -74,6 +74,7 @@
 <body onload="isAdminCheck()">
 
     <h3>Open Works, that you can accept:</h3>
+    <!-- Szabad munkák -->
     <div>
         <% data2.forEach((open_maintenance) => {%>
             <p> <b>TaskNO: </b> <%=open_maintenance.maintenance_id%> <b>Task:</b> <%=open_maintenance.desc%>  <b>Location:</b> <%=open_maintenance.locationId%> <b>Be done by:</b> <%=open_maintenance.time%>
@@ -82,6 +83,7 @@
         <%})%>
     </div>
     <h3>Here are your works that have to be done: </h3>
+    <!-- Munkáid amiket éppen végzel -->
     <div>
         <% data.forEach((mc) => {%>
             <p> <b>TaskNO: </b> <%=mc.maintenance_id%> <b>Task:</b> <%=mc.desc%>  <b>Location:</b> <%=mc.locationId%> <b>Be done by:</b> <%=mc.time%>
@@ -141,6 +143,10 @@
             <div>
                 <label for="category">category</label>
                 <input type="text" id="category" name="category" value="1" required>
+            </div>
+            <div>
+                <label for="instructions">instructions</label>
+                <textarea rows="2" cols="20" id="instructions" name="instructions">Panelt ki kell nyitni, régi készüléket ki kell venni, újat be kell tenni</textarea>
             </div>
             <button type="submit">Add Maintenance</button>
         </form>

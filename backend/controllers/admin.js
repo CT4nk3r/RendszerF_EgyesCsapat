@@ -113,7 +113,7 @@ controller.postAddCategory = async(req, res, next) => {
 
 controller.postAddMaintenance = async (req, res, next) => {
     try {
-        let { desc, lastInstance, period, reoccuring, repairerId, locationId, objectId } = req.body;
+        let { desc, lastInstance, period, reoccuring, repairerId, locationId, objectId, instructions } = req.body;
 
         console.log(req.body)
         await Maintenance.create({
@@ -123,7 +123,8 @@ controller.postAddMaintenance = async (req, res, next) => {
             reoccuring,
             repairerId,
             locationId,
-            objectId
+            objectId, 
+            instructions
         });
         res.send({
             message: {

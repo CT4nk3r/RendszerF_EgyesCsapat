@@ -7,6 +7,7 @@ const Maintenance = sequelize.define('maintenance',
         lastInstance: DataTypes.DATE,
         period: DataTypes.INTEGER,
         reoccuring: DataTypes.BOOLEAN,
+        instructions: DataTypes.STRING(300)
     },
     {
         indexes: [
