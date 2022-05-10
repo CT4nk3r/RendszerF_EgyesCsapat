@@ -86,7 +86,7 @@
     <!-- Munkáid amiket éppen végzel -->
     <div>
         <% data.forEach((mc) => {%>
-            <p> <b>TaskNO: </b> <%=mc.maintenance_id%> <b>Task:</b> <%=mc.desc%>  <b>Location:</b> <%=mc.locationId%> <b>Be done by:</b> <%=mc.time%>
+            <p> <b>TaskNO: </b> <%=mc.maintenance_id%> <b>Task:</b> <%=mc.desc%>  <b>Location:</b> <%=mc.locationId%> <%=mc.instructions%> <b>Be done by:</b> <%=mc.time%>
             <button id=<%=mc.maintenance_id%> onclick="doneJob(<%=mc.maintenance_id%>)">Munka elvégezve</button>
             <button id=<%=mc.maintenance_id%> onclick="declineJob(<%=mc.maintenance_id%>)">Munka elutasítása</button>
             </p>
@@ -180,7 +180,7 @@
             </div>
             <div>
                 <label for="proficiency">proficiency</label>
-                <input type="text" id="proficiency" name="proficiency" value="Tűzoltás" required>  
+                <input type="text" id="proficiency" name="proficiency" value="1" required>  
             </div>
             <button type="submit">Add Repairer</button>
         </form>

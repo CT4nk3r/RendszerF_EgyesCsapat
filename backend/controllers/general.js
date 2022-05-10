@@ -57,6 +57,7 @@ controller.getIndex = async function (req, res, next) {
                     maintenance_id: main.maintenance.id,
                     desc: main.maintenance.desc,
                     locationId: main.maintenance.locationId,
+                    instructions: main.maintenance.instructions,
                     time: formatDate(newDate)  
                 })
             }
